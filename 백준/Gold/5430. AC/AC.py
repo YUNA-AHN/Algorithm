@@ -1,35 +1,34 @@
+import sys
 from collections import deque
- 
-t = int(input())
- 
-for i in range(t):
-    p = input()
-    n = int(input())
-    arr = input()[1:-1].split(',')
- 
-    queue = deque(arr)
- 
-    flag = 0
- 
+input = sys.stdin.readline
+
+T = int(input().strip())
+for tc in range(T):
+    command = input().strip() # 명령문
+    n = int(input().strip()) # 배열 수
+    arr = input().strip()[1:-1].split(',')
+
+    que = deque(arr)
+    flag = 0  # 뒤집기 횟수
+
     if n == 0:
-        queue = []
- 
-    for j in p:
-        if j == 'R':
+        que = deque()
+
+    for co in command:
+        if co == 'R':
             flag += 1
-        elif j == 'D':
-            if len(queue) == 0:
-                print("error")
+        elif co == 'D':
+            if len(que) == 0:
+                print('error')
                 break
             else:
-                if flag % 2 == 0:
-                    queue.popleft()
+                if flag % 2:
+                    que.pop()
                 else:
-                    queue.pop()
- 
+                    que.popleft()
     else:
-        if flag % 2 == 0:
-            print("[" + ",".join(queue) + "]")
+        if flag % 2:
+            que.reverse()
+            print('[' + ','.join(que) + ']')
         else:
-            queue.reverse()
-            print("[" + ",".join(queue) + "]")
+            print('[' + ','.join(que) + ']')
