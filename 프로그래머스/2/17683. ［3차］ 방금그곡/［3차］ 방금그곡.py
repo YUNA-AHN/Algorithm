@@ -1,4 +1,3 @@
-# 3 4 6 8 18 19
 def solution(m, musicinfos):
     answer = '(None)'
     mx_time = 0
@@ -28,13 +27,9 @@ def solution(m, musicinfos):
         piece = sheet * (time // length) + sheet[:time % length]
         
         # m이 piece에 포함되는 경우
-        # print(sheet_m)
-        # print(piece)
+        print(sheet_m)
+        print(piece)
         for idx in range(time-length_m+1):
-            # print(time-len(sheet_m))
-            # print(piece[idx:idx+len(sheet_m)])
-            # print(sheet_m)
-            # print(piece[idx:idx+len(sheet_m)] == sheet_m)
             if piece[idx:idx+length_m] == sheet_m and time > mx_time:
                 answer = music[2]
                 mx_time = time
