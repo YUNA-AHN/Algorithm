@@ -1,33 +1,23 @@
-// numbers를 더하고 빼며 que에 값을 입력
-// que : (합, 인덱스 겸 카운팅)
-import java.util.*;
 class Solution {
+    static int answer = 0;
+    
     public int solution(int[] numbers, int target) {
-        int answer = 0;
-        Deque<ArrayList<Integer>> deq = new LinkedList<>();
-        ArrayList<Integer> first = new ArrayList<>(List.of(0,0));
-        deq.add(first); // 초기값 설정
-        
-        while (!deq.isEmpty()){
-            Integer sum_v = deq.getFirst().get(0);
-            Integer count = deq.getFirst().get(1);
-            deq.removeFirst();
-            // 한바퀴 다 돌았다면
-            if (count == numbers.length) {
-                if (sum_v == target) {
-                    answer++;
-                }
-            } // 아직 덜 돌았다면
-            else {
-                // 값 더해주기
-                ArrayList<Integer> plus = new ArrayList<>(List.of(sum_v + numbers[count], count + 1));
-                // 값 지우기
-                ArrayList<Integer> minus = new ArrayList<>(List.of(sum_v - numbers[count], count + 1));
-                deq.add(plus);
-                deq.add(minus);
-            }
-        }
-        
+        recur(numbers, target, 0, 0);
         return answer;
+    }
+    
+    // 재귀함수 작성
+    public void recur(int[] numbers, int target, int now, int total){
+        // 멈춤 조건 : 길이에 도달하는 경우
+        if (now == numbers.length) {
+            // 카운트 조건 : 길이에 도달했을 때
+            if (total == target) {
+                answer++;
+            }
+        } else {
+            // 더하고 빼서 dfs 진행
+            recur(numbers, target, now + 1, total + numbers[now]);
+            recur(numbers, target, now + 1, total - numbers[now]);
+        }
     }
 }
