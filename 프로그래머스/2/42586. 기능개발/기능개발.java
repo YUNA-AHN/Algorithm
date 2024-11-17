@@ -2,34 +2,38 @@ import java.util.*;
 class Solution {
     public List<Integer> solution(int[] progresses, int[] speeds) {
         List<Integer> answer = new ArrayList<>();
-        Deque<Deque<Integer>> deq = new LinkedList<>();
-        for (int idx = 0 ; idx < progresses.length; idx++){
-            Deque<Integer> preSpeed = new LinkedList<>(); // 과정 + speed를 묶어서 저장
-            preSpeed.add(progresses[idx]);
-            preSpeed.add(speeds[idx]);
-            deq.add(preSpeed);
+        // progresses와 speeds를 묶어 당을 deque
+        Deque<LinkedList<Integer>> deq = new LinkedList<>();
+        
+        for (int i=0; i < progresses.length; i++) {
+            // 조합을 담을 LinkedList
+            LinkedList<Integer> comb = new LinkedList<>();
+            comb.add(progresses[i]);
+            comb.add(speeds[i]);
+            // deq에 추가
+            deq.add(comb);
         }
-        // 한바퀴씩 돌면서 speeds 만큼 더해줌
-        // 더한 뒤에 100 넘는 친구는 빼주기
-        while (!deq.isEmpty()){
-            for (Deque<Integer> now : deq) {
-                // speed 만큼 더하기
-                int progress = now.peekFirst() + now.peekLast();
-                now.removeFirst();
-                now.addFirst(progress);
+        
+        // deq가 빌 때까지
+        while (!deq.isEmpty()) {
+            for (LinkedList<Integer> now : deq) {
+                now.set(0, now.get(0) + now.get(1));
             }
             
             Boolean check = (deq.peekFirst().peekFirst() >= 100) ? true : false;
-            // System.out.println(deq.toString());
-            // System.out.println(check);
-            if (check) {
-                int deploy = 0;
-                while (!deq.isEmpty() && deq.peekFirst().peekFirst() >= 100){
+            if(check) {
+                // deque을 순회하면서 완성된 만큼 pop 후 answer에 추가
+                int ans = 0;
+
+                while (!deq.isEmpty() && deq.peek().get(0) >= 100) {
                     deq.removeFirst();
-                    deploy++;
+                    ans++;
                 }
-                answer.add(deploy);
+
+                answer.add(ans);
             }
+            
+            
         }
         return answer;
     }
